@@ -54,11 +54,13 @@ public class Director extends HttpServlet {
 			case "indicadoresMedico":
 				String idMedico = request.getParameter("medico");
 				request.setAttribute("tipo", "indicadoresMedico");
+				request.setAttribute("nombreMedico", ws.obtenerNombreDeMedico(Integer.valueOf(idMedico)));
 				request.setAttribute("indicadoresMedico", ws.obtenerPorcentajeOcupacionMedico(Integer.valueOf(idMedico), fechaIn, fechaFin)+"");
 				break;
 			case "indicadoresBox":
 				String idBox = request.getParameter("box");
 				request.setAttribute("tipo", "indicadoresBox");
+				request.setAttribute("nombreBox", ws.obtenerNombreDeBox(Integer.valueOf(idBox)));
 				request.setAttribute("indicadoresBox", ws.obtenerPorcentajeOcupacionBox(Integer.valueOf(idBox), fechaIn, fechaFin)+"");
 				break;
 			case "medicosMasSolicitados":

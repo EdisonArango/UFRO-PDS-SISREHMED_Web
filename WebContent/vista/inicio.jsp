@@ -37,7 +37,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">SISREHMED</a>
+                <a class="navbar-brand" href="Busqueda">SISREHMED</a>
               </div>
               <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
@@ -105,7 +105,7 @@
                       </span>
                   </div>
               </li>
-              <li><button type="submit" class="btn btn-inverse btn-sm btn-block input-sidebar"><b>Buscar</b></button></li>
+              <li><button type="submit" class="btn btn-primary btn-sm btn-block input-sidebar"><b>Buscar</b></button></li>
 
             </ul>
           </form> 
@@ -146,7 +146,7 @@
 									out.print("<td>"+hora+"</td>");
 									out.print("<td>"+actual.get("fecha")+"</td>");
 									out.print("<td>"+actual.get("box")+"</td>");
-									out.print("<td><button class='btn' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
+									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
 									out.print("<tr>");
 								}
 							}
@@ -176,12 +176,12 @@
 									<ul class="dropdown-menu" role="menu">
 									<%
 									if(indicesIguales.size()==0){
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
+										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+actual.get("medico")+"</a></li>");
 									}
 									else{
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
+										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+actual.get("medico")+"</a></li>");
 										for (int j=0; j<indicesIguales.size();j++){
-											out.print("<li><a href='#'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
+											out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
 										}
 										abiertos.addAll(indicesIguales);
 									}

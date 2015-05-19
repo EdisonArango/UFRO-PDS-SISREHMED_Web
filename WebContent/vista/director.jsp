@@ -144,7 +144,7 @@
 				<%
 				if(tipo=="indicadoresMedico"){
 					%>
-					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de médico</h2>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación del médico: <% out.print(request.getAttribute("nombreMedico")); %></h2>
 					<blockquote>
 				  		<p>Porcentaje de ocupación del médico en el rango dado:   <b style="font-size: 2.5em;padding-top:230px;"><% out.print(request.getAttribute("indicadoresMedico")+"%"); %></b></p>
 					</blockquote>
@@ -152,7 +152,7 @@
 				}
 				else if (tipo == "indicadoresBox"){
 					%>
-					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de box</h2>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de box: <% out.print(request.getAttribute("nombreBox")); %></h2>
 					<blockquote>
 				  		<p>Porcentaje de ocupación del box en el rango dado: <b style="font-size: 2.5em;padding-top:5px;"><% out.print(request.getAttribute("indicadoresBox")+"%"); %></b></p>
 					</blockquote>
@@ -169,7 +169,7 @@
 					else{
 						entidad = "Paciente";
 						%>
-						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados</h2>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Pacientes que mas reservan</h2>
 						<%
 					}
 				%>

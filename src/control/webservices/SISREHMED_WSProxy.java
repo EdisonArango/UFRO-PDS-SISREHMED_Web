@@ -116,5 +116,17 @@ public class SISREHMED_WSProxy implements control.webservices.SISREHMED_WS {
     return sISREHMED_WS.obtenerPacientesQueMasReservan(fechaIn, fechaFin);
   }
   
+  public java.lang.String obtenerNombreDeMedico(int idMedico) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.obtenerNombreDeMedico(idMedico);
+  }
+  
+  public java.lang.String obtenerNombreDeBox(int idBox) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.obtenerNombreDeBox(idBox);
+  }
+  
   
 }

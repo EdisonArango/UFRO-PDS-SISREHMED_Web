@@ -20,4 +20,6 @@ public interface SISREHMED_WS extends java.rmi.Remote {
     public int obtenerPorcentajeOcupacionMedico(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException;
     public java.lang.String obtenerMedicosMasSolicitados(java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException;
     public java.lang.String obtenerPacientesQueMasReservan(java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException;
+    public java.lang.String obtenerNombreDeMedico(int idMedico) throws java.rmi.RemoteException;
+    public java.lang.String obtenerNombreDeBox(int idBox) throws java.rmi.RemoteException;
 }

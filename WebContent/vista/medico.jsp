@@ -83,7 +83,7 @@
                       </span>
                   </div>
               </li>
-              <li><button type="submit" class="btn btn-inverse btn-sm btn-block input-sidebar"><b>Buscar</b></button></li>
+              <li><button type="submit" class="btn btn-primary btn-sm btn-block input-sidebar"><b>Buscar</b></button></li>
 
             </ul>
           </form> 
@@ -131,7 +131,7 @@
 										out.print("<td>"+hora+"</td>");
 										out.print("<td>"+actual.get("fecha")+"</td>");
 										out.print("<td>"+actual.get("box")+"</td>");
-									out.print("<td><button class='btn' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
+									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
 									}
 									out.print("<tr>");
 								}
