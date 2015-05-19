@@ -37,12 +37,9 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">SISREHMED</a>
+                <a class="navbar-brand" href="Busqueda">SISREHMED</a>
               </div>
               <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                        <li><a href="Medico">Ingreso de médicos</a></li>
-                    </ul>
               </div>
             </div>
         </div>
@@ -50,15 +47,9 @@
         <div class="container-fluid">
         <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <form method="get" action="Busqueda">
+            <form method="get" action="Director">
             <ul class="nav nav-sidebar">
-              <li><h4 style="color: #555">BUSQUEDA</h4></li>
-              <li>
-                    <select onchange="cambiarTipoBusqueda()" id="selectTipo" class="input-sidebar form-control" name="tipo" style="width:80%;">
-                        <option value="medico">Búsqueda por médico</option>
-                        <option value="especialidad">Búsqueda por especialidad</option>
-                    </select>
-              </li>
+              <li><h4 style="color: #555">Rango de horario</h4></li>
               <li>
                   <div id="medico">
                     <label for="medico">Médico</label>
@@ -68,20 +59,6 @@
                         	JSONArray medicos = Utilidades.obtenerArrayJSON(medicosJSON, "medicos");
                             for (int i=0; i<medicos.size();i++){
                             	JSONObject actual = (JSONObject)medicos.get(i);
-                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
-                            }
-
-                         %>
-                    </select>
-                  </div>
-                  <div id="especialidad" style="display: none;">
-                    <label for="especialidad">Especialidad</label>
-                    <select class="input-sidebar form-control" name="especialidad" style="width:80%;">
-                        <%
-                        	String especialidadesJSON = (String)request.getAttribute("especialidades");
-                        	JSONArray especialidades = Utilidades.obtenerArrayJSON(especialidadesJSON, "especialidades");
-                            for (int i=0; i<especialidades.size();i++){
-                            	JSONObject actual = (JSONObject)especialidades.get(i);
                                 out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
                             }
 
@@ -121,7 +98,7 @@
                 </div>
             <% } %>
                  
-            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la busqueda</h2>
+            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Horario</h2>
           <div class="table-responsive">
 					<table class="table table-striped">
 						<thead>

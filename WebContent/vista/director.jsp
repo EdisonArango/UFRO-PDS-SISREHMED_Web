@@ -37,12 +37,9 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">SISREHMED</a>
+                <a class="navbar-brand" href="Busqueda">SISREHMED</a>
               </div>
               <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                        <li><a href="Medico">Ingreso de médicos</a></li>
-                    </ul>
               </div>
             </div>
         </div>
@@ -64,12 +61,12 @@
                     <label for="medico">Médico</label>
                     <select class="input-sidebar form-control" name="medico" style="width:80%;">
                         <%
-                            String medicosJSON = (String)request.getAttribute("medicos");
-                        	JSONArray medicos = Utilidades.obtenerArrayJSON(medicosJSON, "medicos");
-                            for (int i=0; i<medicos.size();i++){
-                            	JSONObject actual = (JSONObject)medicos.get(i);
-                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
-                            }
+//                             String medicosJSON = (String)request.getAttribute("medicos");
+//                         	JSONArray medicos = Utilidades.obtenerArrayJSON(medicosJSON, "medicos");
+//                             for (int i=0; i<medicos.size();i++){
+//                             	JSONObject actual = (JSONObject)medicos.get(i);
+//                                 out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
+//                             }
 
                          %>
                     </select>
@@ -78,12 +75,12 @@
                     <label for="especialidad">Especialidad</label>
                     <select class="input-sidebar form-control" name="especialidad" style="width:80%;">
                         <%
-                        	String especialidadesJSON = (String)request.getAttribute("especialidades");
-                        	JSONArray especialidades = Utilidades.obtenerArrayJSON(especialidadesJSON, "especialidades");
-                            for (int i=0; i<especialidades.size();i++){
-                            	JSONObject actual = (JSONObject)especialidades.get(i);
-                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
-                            }
+//                         	String especialidadesJSON = (String)request.getAttribute("especialidades");
+//                         	JSONArray especialidades = Utilidades.obtenerArrayJSON(especialidadesJSON, "especialidades");
+//                             for (int i=0; i<especialidades.size();i++){
+//                             	JSONObject actual = (JSONObject)especialidades.get(i);
+//                                 out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
+//                             }
 
                          %>
                     </select>
@@ -121,7 +118,7 @@
                 </div>
             <% } %>
                  
-            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la busqueda</h2>
+            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Horario</h2>
           <div class="table-responsive">
 					<table class="table table-striped">
 						<thead>

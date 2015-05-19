@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+
 import control.util.Utilidades;
 import control.webservices.SISREHMED_WS;
 import control.webservices.SISREHMED_WSProxy;
@@ -42,21 +44,24 @@ public class Busqueda extends HttpServlet {
         
         request.setAttribute("medicos", ws.obtenerTodosLosMedicos());
         request.setAttribute("especialidades", ws.obtenerEspecialidades());
-        
         String fechaIn="",fechaFin="";
         
         if (tipo!=null) {
-            fechaIn = request.getParameter("fechaIn");
-            fechaFin = request.getParameter("fechaFin");
-            if (fechaIn.equals("")||fechaFin.equals("")) {
-                java.util.Date fecha=new java.util.Date();
-                fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
-                fechaFin=fechaIn;
-            }
+//        	System.out.println(tipo);
+        	if(!tipo.equals("APS")){
+        		fechaIn = request.getParameter("fechaIn");
+        		fechaFin = request.getParameter("fechaFin");
+        		if (fechaIn.equals("")||fechaFin.equals("")) {
+        			java.util.Date fecha=new java.util.Date();
+        			fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
+        			fechaFin=fechaIn;
+        		}
+        	}
         }
         else{
             tipo="";
-        }    
+        }
+        
         switch (tipo) {
             case "medico":
                 int idMedico=0;
@@ -67,14 +72,18 @@ public class Busqueda extends HttpServlet {
                     request.setAttribute("mensaje", "No es válido el médico indicado");
                     request.setAttribute("tipoMensaje", "warning"); //success,warning
                     request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
+                    return;
                 }
-                request.setAttribute("tipoBusqueda", "busquedaPorMedico");
                 String horasEncontradas = ws.buscarHoraAPSPorMedico(idMedico, fechaIn, fechaFin);
-                if (horasEncontradas.isEmpty()) {
+//                System.out.println(horasEncontradas);
+                JSONArray arrayHoras = Utilidades.obtenerArrayJSON(horasEncontradas, "horasEncontradas");
+                if (arrayHoras.isEmpty()) {
                     request.setAttribute("mensaje", "No hay horas disponibles para la busqueda indicada");
                     request.setAttribute("tipoMensaje", "warning"); //success,warning
                     request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
+                    return;
                 }
+                request.setAttribute("tipoBusqueda", "busquedaPorMedico");
                 request.setAttribute("horasLibres",horasEncontradas);
                 request.setAttribute("fechasRango", Utilidades.diasDeRango(fechaIn, fechaFin));
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
@@ -82,10 +91,16 @@ public class Busqueda extends HttpServlet {
             case "especialidad":
                 int idEspecialidad = Integer.valueOf(request.getParameter("especialidad"));
                 request.setAttribute("tipoBusqueda", "busquedaPorEspecialidad");
+//                System.out.print(ws.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin));
                 request.setAttribute("horasLibres",ws.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin));
                 request.setAttribute("fechasRango", Utilidades.diasDeRango(fechaIn, fechaFin));
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                 break;
+            case "APS":
+//            	request.setAttribute("mensaje", request.getParameter("mensaje"));
+//                request.setAttribute("tipoMensaje", request.getParameter("tipoMensaje")); //success,warning
+                request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
+            	break;
             default:
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                 break;

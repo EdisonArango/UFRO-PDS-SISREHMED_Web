@@ -124,4 +124,54 @@ public class Utilidades {
 		}
 	}
     
+    public static String formatearNumero (int numero){
+    	return String.format("%02d",numero);
+    }
+    
+    public static String obtenerHoraDeNumero (int numero){
+    	String formateado = formatearNumero(numero*15/60)+":"+formatearNumero((numero*15)%60);
+    	return formateado;
+    }
+    
+    public static String obtenerHoraDeNumeroFin (int numero){
+    	int hora = numero*15/60;
+    	int minutos = (numero*15)%60;
+    	if(minutos==0){
+    		minutos=59;
+    		hora--;
+    	}
+    	else{
+    		minutos--;
+    	}
+    	String formateado = formatearNumero(hora)+ ":"+formatearNumero(minutos);
+    	return formateado;
+    }
+    
+    public static ArrayList<Integer> indicesDeHorasIguales (JSONArray array,int i){
+    	ArrayList<Integer> indices = new ArrayList<Integer>();
+    	JSONObject objeto = (JSONObject)array.get(i);
+    	String fecha = (String)objeto.get("fecha");
+    	String hora = (String)objeto.get("hora");
+    	for (int j = 0; j < array.size(); j++) {
+			if(j!=i){
+				JSONObject actual = (JSONObject)array.get(j);
+				String fechaActual = (String)actual.get("fecha");
+		    	String horaActual = (String)actual.get("hora");
+				if(fecha.equals(fechaActual)&&hora.equals(horaActual)){
+					indices.add(j);
+				}
+			}
+		}
+    	return indices;
+    }
+    
+    public static boolean estaEnArray(ArrayList<Integer> array,int valor){
+    	for (int i = 0; i < array.size(); i++) {
+			if(array.get(i)==valor){
+				return true;
+			}
+		}
+    	return false;
+    }
+    
 }
