@@ -39,7 +39,24 @@ public class Medico extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
     	request.setAttribute("medicos", ws.obtenerTodosLosMedicos());
+    	String tipo=request.getParameter("tipoLlamado");
+    	String fechaIn,fechaFin;
+    	int idMedico;
+    	if (tipo!=null){
+    		fechaIn = request.getParameter("fechaIn");
+    		fechaFin = request.getParameter("fechaFin");
+    		idMedico = Integer.valueOf(request.getParameter("medico"));
+    		if (fechaIn.equals("")||fechaFin.equals("")) {
+    			java.util.Date fecha=new java.util.Date();
+    			fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
+    			fechaFin=fechaIn;
+    		}
+    		System.out.println(ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
+    		request.setAttribute("horasDeMedico", ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
+    	}
+    	
     	request.getRequestDispatcher("vista/medico.jsp").forward(request, response);
+    	
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

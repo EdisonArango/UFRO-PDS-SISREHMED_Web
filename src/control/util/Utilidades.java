@@ -174,4 +174,21 @@ public class Utilidades {
     	return false;
     }
     
+    /**
+     * 
+     * @return Enteros en formato int,int,int
+     */
+    public static String enterosACadena(int[] enteros){
+    	String cadena="";
+    	for (int i = 0; i < enteros.length; i++) {
+			if(i<enteros.length-1){
+				cadena+= enteros[i]+",";
+			}
+			else{
+				cadena+=enteros[i];
+			}
+		}
+    	return cadena;
+    }
+    
 }

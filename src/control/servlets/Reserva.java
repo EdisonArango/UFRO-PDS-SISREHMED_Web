@@ -71,8 +71,31 @@ public class Reserva extends HttpServlet {
 				rd.forward(request, response);
 			}
 			break;
-		case "control":
-			
+		case "control"://Solo reserva una hora, se pueden reservar horas consecutivas también
+			rd = request.getRequestDispatcher("Medico");
+			int[] idHoras = {Integer.valueOf(request.getParameter("id"))};
+			String pacient = request.getParameter("paciente");
+			int idPacient;
+			if(Utilidades.isNumeric(pacient)){
+				idPacient = Integer.valueOf(pacient);
+				String resultadoReserva = ws.reservarHoraControl(Utilidades.enterosACadena(idHoras), idPacient);
+//				System.out.println("Resultado reserva: "+resultadoReserva);
+				if(!resultadoReserva.equals("Error")){
+					request.setAttribute("mensaje", "Se han reservado las horas médicas, número de reserva: "+resultadoReserva.substring(0, resultadoReserva.length()));
+					request.setAttribute("tipoMensaje", "success");
+					rd.forward(request, response);
+				}
+				else{
+					request.setAttribute("mensaje", resultadoReserva);
+					request.setAttribute("tipoMensaje", "danger");
+					rd.forward(request, response);
+				}
+			}
+			else{
+				request.setAttribute("mensaje", "Error en los parámetros");
+				request.setAttribute("tipoMensaje", "danger");
+				rd.forward(request, response);
+			}
 			break;
 		default:
 			break;

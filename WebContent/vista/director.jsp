@@ -44,187 +44,176 @@
             </div>
         </div>
 
-        <div class="container-fluid">
-        <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <form method="get" action="Busqueda">
-            <ul class="nav nav-sidebar">
-              <li><h4 style="color: #555">BUSQUEDA</h4></li>
-              <li>
-                    <select onchange="cambiarTipoBusqueda()" id="selectTipo" class="input-sidebar form-control" name="tipo" style="width:80%;">
-                        <option value="medico">Búsqueda por médico</option>
-                        <option value="especialidad">Búsqueda por especialidad</option>
-                    </select>
-              </li>
-              <li>
-                  <div id="medico">
-                    <label for="medico">Médico</label>
-                    <select class="input-sidebar form-control" name="medico" style="width:80%;">
-                        <%
-//                             String medicosJSON = (String)request.getAttribute("medicos");
-//                         	JSONArray medicos = Utilidades.obtenerArrayJSON(medicosJSON, "medicos");
-//                             for (int i=0; i<medicos.size();i++){
-//                             	JSONObject actual = (JSONObject)medicos.get(i);
-//                                 out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
-//                             }
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<form method="get" action="Director">
+					<input id="inputTipo" type="hidden" name="tipoReporte">
+					<ul class="nav nav-sidebar">
+						<li><h4 style="color: #555">REPORTES</h4></li>
+						<li><label for="fechaIn">Desde:</label>
+							<div class="input-group date input-sidebar">
+								<input type="text" name="fechaIn"
+									class="form-control input-medium" placeholder="DD/MM/AAAA">
+								<span class="input-group-addon"><i
+									class="glyphicon glyphicon-calendar"></i> </span>
+							</div></li>
+						<li><label for="fechaFin">Hasta:</label>
+							<div class="input-group date input-sidebar">
+								<input type="text" name="fechaFin"
+									class="form-control input-medium" placeholder="DD/MM/AAAA">
+								<span class="input-group-addon"><i
+									class="glyphicon glyphicon-calendar"></i> </span>
+							</div></li>
+							<li class="divider"></li>
+						<li>
+							<div id="medico">
+								<label for="medico">Porcentaje de ocupación de médico</label> <select
+									class="input-sidebar form-control" name="medico"
+									style="width: 80%;">
+									<%
+                            String medicosJSON = (String)request.getAttribute("medicos");
+                        	JSONArray medicos = Utilidades.obtenerArrayJSON(medicosJSON, "medicos");
+                            for (int i=0; i<medicos.size();i++){
+                            	JSONObject actual = (JSONObject)medicos.get(i);
+                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
+                            }
 
                          %>
-                    </select>
-                  </div>
-                  <div id="especialidad" style="display: none;">
-                    <label for="especialidad">Especialidad</label>
-                    <select class="input-sidebar form-control" name="especialidad" style="width:80%;">
-                        <%
-//                         	String especialidadesJSON = (String)request.getAttribute("especialidades");
-//                         	JSONArray especialidades = Utilidades.obtenerArrayJSON(especialidadesJSON, "especialidades");
-//                             for (int i=0; i<especialidades.size();i++){
-//                             	JSONObject actual = (JSONObject)especialidades.get(i);
-//                                 out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
-//                             }
+								</select>
+							</div>
+						</li>
+						<li><button onclick="cambiarTipoReporte('indicadoresMedico')"
+								class="btn btn-primary btn-sm btn-block input-sidebar">
+								<b>Ver porcentaje</b>
+							</button></li>
+						<li class="divider"></li>
+						<li>
+							<div id="medico">
+								<label for="medico">Porcentaje de ocupación de box</label> <select
+									class="input-sidebar form-control" name="box"
+									style="width: 80%;">
+									<%
+                            String boxJSON = (String)request.getAttribute("boxes");
+                        	JSONArray boxes = Utilidades.obtenerArrayJSON(boxJSON, "boxes");
+                            for (int i=0; i<boxes.size();i++){
+                            	JSONObject actual = (JSONObject)boxes.get(i);
+                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
+                            }
 
                          %>
-                    </select>
-                  </div>
-              </li>
-              <li>
-                  <label for="fechaIn">Desde:</label>
-                  <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaIn" class="form-control input-medium" placeholder="DD/MM/AAAA">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
-                      </span>
-                  </div>
-              </li>
-              <li>
-                  <label for="fechaFin">Hasta:</label>
-                  <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaFin" class="form-control input-medium" placeholder="DD/MM/AAAA">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
-                      </span>
-                  </div>
-              </li>
-              <li><button type="submit" class="btn btn-inverse btn-sm btn-block input-sidebar"><b>Buscar</b></button></li>
+								</select>
+							</div>
+						</li>
+						<li><button onclick="cambiarTipoReporte('indicadoresBox')"
+								class="btn btn-primary btn-sm btn-block input-sidebar">
+								<b>Ver porcentaje</b>
+							</button></li>
+						<li class="divider"></li>
+						<li><button
+								onclick="cambiarTipoReporte('medicosMasSolicitados')"
+								class="btn btn-primary btn-sm btn-block input-sidebar">
+								<b>Ver médicos mas solicitados</b>
+							</button></li>
+						<li class="divider"></li>
+						<li><button
+								onclick="cambiarTipoReporte('pacientesQueMasReservan')"
+								class="btn btn-primary btn-sm btn-block input-sidebar">
+								<b>Ver pacientes que mas reservan</b>
+							</button></li>
+						<li class="divider"></li>
 
-            </ul>
-          </form> 
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            
-            <% 
+					</ul>
+				</form>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+				<% 
                 String mensaje = (String)request.getAttribute("mensaje");
                 if(mensaje!=null&&mensaje!=""){ %>
-                <div style="padding-left: 26%;" class="alert alert-${tipoMensaje} alert-dismissable mensaje">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>¡${tipoMensaje}!</strong> ${mensaje}
-                </div>
-            <% } %>
-                 
-            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Horario</h2>
-          <div class="table-responsive">
+				<div style="padding-left: 26%;"
+					class="alert alert-${tipoMensaje} alert-dismissable mensaje">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>¡${tipoMensaje}!</strong> ${mensaje}
+				</div>
+				<% } 
+            	String tipo = (String)request.getAttribute("tipo");
+            	if(tipo!=null){
+            %>
+
+				<%
+				if(tipo=="indicadoresMedico"){
+					%>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de médico</h2>
+					<blockquote>
+				  		<p>Porcentaje de ocupación del médico en el rango dado:   <b style="font-size: 2.5em;padding-top:230px;"><% out.print(request.getAttribute("indicadoresMedico")+"%"); %></b></p>
+					</blockquote>
+					<%
+				}
+				else if (tipo == "indicadoresBox"){
+					%>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de box</h2>
+					<blockquote>
+				  		<p>Porcentaje de ocupación del box en el rango dado: <b style="font-size: 2.5em;padding-top:5px;"><% out.print(request.getAttribute("indicadoresBox")+"%"); %></b></p>
+					</blockquote>
+					<%
+				}
+				else if (tipo=="medicosMasSolicitados"||tipo=="pacientesQueMasReservan"){
+					String entidad;
+					if(tipo=="medicosMasSolicitados"){
+						entidad = "Médico";
+						%>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados</h2>
+						<%
+					}
+					else{
+						entidad = "Paciente";
+						%>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados</h2>
+						<%
+					}
+				%>
+				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>Hora</th>
-								<th>Fecha</th>
-								<th>Box</th>
-								<th>Reserva</th>
+								<th>#</th>
+								<th><% out.print(entidad); %></th>
+								<th>Cantidad de horas reservadas</th>
 							</tr>
 						</thead>
 						<tbody>
-						<%
-							String tipo = (String) request.getAttribute("tipoBusqueda");
-							if (tipo != null && tipo.equals("busquedaPorMedico")) {
-								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
-								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
-								for (int i = 0; i < horasLibres.size(); i++) {
-									JSONObject actual = (JSONObject) horasLibres.get(i);
-									int numeroHora = Integer.valueOf((String)actual.get("hora"));
-									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
-									out.print("<tr>");
-									out.print("<td>"+hora+"</td>");
-									out.print("<td>"+actual.get("fecha")+"</td>");
-									out.print("<td>"+actual.get("box")+"</td>");
-									out.print("<td><button class='btn' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
-									out.print("<tr>");
-								}
+							<%
+							String entidadesMasJSON;
+							JSONArray entidadesMas= new JSONArray();
+							if (tipo.equals("medicosMasSolicitados")) {
+								entidadesMasJSON = (String) request.getAttribute("medicosMasSolicitados");
+								entidadesMas = Utilidades.obtenerArrayJSON(entidadesMasJSON, "medicos");
 							}
-							else if(tipo != null && tipo.equals("busquedaPorEspecialidad")){
-								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
-								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
-								ArrayList<Integer> abiertos = new ArrayList<Integer>();
-								for (int i = 0; i < horasLibres.size(); i++) {
-									if(Utilidades.estaEnArray(abiertos, i)){
-										continue;
-									}
-									JSONObject actual = (JSONObject) horasLibres.get(i);
-									int numeroHora = Integer.valueOf((String)actual.get("hora"));
-									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
-									out.print("<tr>");
-									out.print("<td>"+hora+"</td>");
-									out.print("<td>"+actual.get("fecha")+"</td>");
-									out.print("<td>"+actual.get("box")+"</td>");
-									ArrayList<Integer> indicesIguales = Utilidades.indicesDeHorasIguales(horasLibres, i);
-									%>
-									<td>
-									<div class="btn-group">
-									<button type="button" style="margin-right: 0; margin-left: 0;"
-										class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-										Reservar con: <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-									<%
-									if(indicesIguales.size()==0){
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
-									}
-									else{
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
-										for (int j=0; j<indicesIguales.size();j++){
-											out.print("<li><a href='#'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
-										}
-										abiertos.addAll(indicesIguales);
-									}
-									%>
-									<li><a href="#"></a></li>
-									</ul>
-									<td>
-									<%
-									out.print("<tr>");
-								}
+							else{
+								entidadesMasJSON = (String) request.getAttribute("pacientesQueMasReservan");
+								entidadesMas = Utilidades.obtenerArrayJSON(entidadesMasJSON, "pacientes");
 							}
+							
+							for (int i = 0; i < entidadesMas.size(); i++) {
+								JSONObject actual = (JSONObject) entidadesMas.get(i);	
+								out.print("<tr>");
+								out.print("<td>"+(i+1)+"</td>");
+								out.print("<td>"+actual.get("nombre")+"</td>");
+								out.print("<td>"+actual.get("cantidad")+"</td>");
+								out.print("<tr>");
+							}
+
 						%>
-										
+
 						</tbody>
 					</table>
+				</div>
+				<% }
+				} %>
 			</div>
-        </div>
-      </div>
-        </div>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="modalReserva" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica APS</h4>
-		      </div>
-		      <div class="modal-body">
-		        <form id="formReserva" action="Reserva" method="get">
-		          <div class="form-group">
-		            <label for="paciente" class="control-label">ID Paciente:</label>
-		            <input type="text" class="form-control" name="paciente" id="paciente">
-		          </div>
-		            <input type="hidden" class="form-control" name="id" id="id-input">
-		            <input type="hidden" class="form-control" name="tipo" value="APS">
-	            <div class="form-group">
-		          </div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-		        <button id="botonReservaModal" type="button" class="btn btn-primary">Reservar</button>
-		      </div>
-		    </div>
-		  </div>
 		</div>
-    </body>
+	</div>
+
+</body>
 </html>

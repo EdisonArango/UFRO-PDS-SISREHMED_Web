@@ -47,10 +47,11 @@
         <div class="container-fluid">
         <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <form method="get" action="Director">
+            <form method="get" action="Medico">
             <ul class="nav nav-sidebar">
               <li><h4 style="color: #555">Rango de horario</h4></li>
               <li>
+              <input type="hidden" name="tipoLlamado" value="verHorario">
                   <div id="medico">
                     <label for="medico">Médico</label>
                     <select class="input-sidebar form-control" name="medico" style="width:80%;">
@@ -111,62 +112,27 @@
 						</thead>
 						<tbody>
 						<%
-							String tipo = (String) request.getAttribute("tipoBusqueda");
-							if (tipo != null && tipo.equals("busquedaPorMedico")) {
-								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
-								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
-								for (int i = 0; i < horasLibres.size(); i++) {
-									JSONObject actual = (JSONObject) horasLibres.get(i);
+							String horasDeMedico = (String) request.getAttribute("horasDeMedico");
+							if (horasDeMedico!=null) {
+								JSONArray horas = Utilidades.obtenerArrayJSON(horasDeMedico, "horasEncontradas");
+								for (int i = 0; i < horas.size(); i++) {
+									JSONObject actual = (JSONObject) horas.get(i);
 									int numeroHora = Integer.valueOf((String)actual.get("hora"));
 									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
-									out.print("<tr>");
-									out.print("<td>"+hora+"</td>");
-									out.print("<td>"+actual.get("fecha")+"</td>");
-									out.print("<td>"+actual.get("box")+"</td>");
+									if(actual.get("reservado").equals("si")){
+										out.print("<tr>");
+										out.print("<td>"+hora+"</td>");
+										out.print("<td>"+actual.get("fecha")+"</td>");
+										out.print("<td>"+actual.get("box")+"</td>");
+										out.print("<td>"+actual.get("tipo")+" con: <b>"+actual.get("paciente")+"</b></td>");
+									}
+									else if(actual.get("tipo").equals("Control")){
+										out.print("<tr>");
+										out.print("<td>"+hora+"</td>");
+										out.print("<td>"+actual.get("fecha")+"</td>");
+										out.print("<td>"+actual.get("box")+"</td>");
 									out.print("<td><button class='btn' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
-									out.print("<tr>");
-								}
-							}
-							else if(tipo != null && tipo.equals("busquedaPorEspecialidad")){
-								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
-								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
-								ArrayList<Integer> abiertos = new ArrayList<Integer>();
-								for (int i = 0; i < horasLibres.size(); i++) {
-									if(Utilidades.estaEnArray(abiertos, i)){
-										continue;
 									}
-									JSONObject actual = (JSONObject) horasLibres.get(i);
-									int numeroHora = Integer.valueOf((String)actual.get("hora"));
-									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
-									out.print("<tr>");
-									out.print("<td>"+hora+"</td>");
-									out.print("<td>"+actual.get("fecha")+"</td>");
-									out.print("<td>"+actual.get("box")+"</td>");
-									ArrayList<Integer> indicesIguales = Utilidades.indicesDeHorasIguales(horasLibres, i);
-									%>
-									<td>
-									<div class="btn-group">
-									<button type="button" style="margin-right: 0; margin-left: 0;"
-										class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-										Reservar con: <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-									<%
-									if(indicesIguales.size()==0){
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
-									}
-									else{
-										out.print("<li><a href='#'>"+actual.get("medico")+"</a></li>");
-										for (int j=0; j<indicesIguales.size();j++){
-											out.print("<li><a href='#'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
-										}
-										abiertos.addAll(indicesIguales);
-									}
-									%>
-									<li><a href="#"></a></li>
-									</ul>
-									<td>
-									<%
 									out.print("<tr>");
 								}
 							}
@@ -185,7 +151,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica APS</h4>
+		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica de Control</h4>
 		      </div>
 		      <div class="modal-body">
 		        <form id="formReserva" action="Reserva" method="get">
@@ -194,7 +160,7 @@
 		            <input type="text" class="form-control" name="paciente" id="paciente">
 		          </div>
 		            <input type="hidden" class="form-control" name="id" id="id-input">
-		            <input type="hidden" class="form-control" name="tipo" value="APS">
+		            <input type="hidden" class="form-control" name="tipo" value="control">
 	            <div class="form-group">
 		          </div>
 		        </form>

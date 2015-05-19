@@ -61,6 +61,10 @@ $(document).ready(function() {
         }
         
     }
+    
+    function cambiarTipoReporte (tipo){
+    	$("#inputTipo").val(tipo);
+    }
 
     
 

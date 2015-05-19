@@ -68,6 +68,12 @@ public class SISREHMED_WSProxy implements control.webservices.SISREHMED_WS {
     return sISREHMED_WS.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin);
   }
   
+  public java.lang.String buscarSusHorasMedicas(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin);
+  }
+  
   public java.lang.String reservarHoraAPS(int idHoraMedica, int idPaciente) throws java.rmi.RemoteException{
     if (sISREHMED_WS == null)
       _initSISREHMED_WSProxy();
