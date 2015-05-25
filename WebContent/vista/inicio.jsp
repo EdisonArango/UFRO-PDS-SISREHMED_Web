@@ -43,6 +43,9 @@
                     <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
                         <li><a href="Medico">Ingreso de médicos</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
+                        <li><a href="Director">Ingreso de director</a></li>
+                    </ul>
               </div>
             </div>
         </div>
