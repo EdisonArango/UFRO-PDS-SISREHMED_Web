@@ -56,6 +56,8 @@ public class Busqueda extends HttpServlet {
         			fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
         			fechaFin=fechaIn;
         		}
+        		request.setAttribute("fechaInicio", fechaIn);
+            	request.setAttribute("fechaFinal", fechaFin);
         	}
         }
         else{
@@ -102,6 +104,8 @@ public class Busqueda extends HttpServlet {
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
             	break;
             default:
+            	request.setAttribute("fechaInicio", "28/05/2015");
+            	request.setAttribute("fechaFinal", "06/06/2015");
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                 break;
         }

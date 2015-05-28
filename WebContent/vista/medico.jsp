@@ -70,7 +70,7 @@
               <li>
                   <label for="fechaIn">Desde:</label>
                   <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaIn" class="form-control input-medium" placeholder="DD/MM/AAAA">
+                      <input type="text" name="fechaIn" class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaInicio}">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
                       </span>
                   </div>
@@ -78,7 +78,7 @@
               <li>
                   <label for="fechaFin">Hasta:</label>
                   <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaFin" class="form-control input-medium" placeholder="DD/MM/AAAA">
+                      <input type="text" name="fechaFin" class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaFinal}">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
                       </span>
                   </div>
@@ -131,7 +131,7 @@
 										out.print("<td>"+hora+"</td>");
 										out.print("<td>"+actual.get("fecha")+"</td>");
 										out.print("<td>"+actual.get("box")+"</td>");
-									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
+									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"' data-hora='"+actual.get("hora")+"' data-fecha='"+actual.get("fecha")+"' data-box='"+actual.get("box")+"'>Reservar</button></td>");
 									}
 									out.print("<tr>");
 								}
@@ -152,6 +152,12 @@
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica de Control</h4>
+		        <br>
+		        <div class="row">
+				  <div class="col-md-4"><b>Fecha:</b> <p id="id-fecha"></p></div>
+				  <div class="col-md-4"><b>Hora:</b> <p id="id-hora"></p></div>
+				  <div class="col-md-4"><b>Box:</b> <p id="id-box"></p></div>
+				</div> 
 		      </div>
 		      <div class="modal-body">
 		        <form id="formReserva" action="Reserva" method="get">

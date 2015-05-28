@@ -55,7 +55,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <form method="get" action="Busqueda">
             <ul class="nav nav-sidebar">
-              <li><h4 style="color: #555">BUSQUEDA</h4></li>
+              <li><h4 style="color: #555">BÚSQUEDA</h4></li>
               <li>
                     <select onchange="cambiarTipoBusqueda()" id="selectTipo" class="input-sidebar form-control" name="tipo" style="width:80%;">
                         <option value="medico">Búsqueda por médico</option>
@@ -95,7 +95,7 @@
               <li>
                   <label for="fechaIn">Desde:</label>
                   <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaIn" class="form-control input-medium" placeholder="DD/MM/AAAA">
+                      <input type="text" name="fechaIn" class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaInicio}">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
                       </span>
                   </div>
@@ -103,7 +103,7 @@
               <li>
                   <label for="fechaFin">Hasta:</label>
                   <div class="input-group date input-sidebar">
-                      <input type="text" name="fechaFin" class="form-control input-medium" placeholder="DD/MM/AAAA">
+                      <input type="text" name="fechaFin" class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaFinal}">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
                       </span>
                   </div>
@@ -124,7 +124,7 @@
                 </div>
             <% } %>
                  
-            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la busqueda</h2>
+            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la búsqueda</h2>
           <div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
@@ -149,7 +149,7 @@
 									out.print("<td>"+hora+"</td>");
 									out.print("<td>"+actual.get("fecha")+"</td>");
 									out.print("<td>"+actual.get("box")+"</td>");
-									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>Reservar</button></td>");
+									out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"' data-hora='"+actual.get("hora")+"' data-fecha='"+actual.get("fecha")+"' data-box='"+actual.get("box")+"'>Reservar</button></td>");
 									out.print("<tr>");
 								}
 							}
@@ -169,30 +169,33 @@
 									out.print("<td>"+actual.get("fecha")+"</td>");
 									out.print("<td>"+actual.get("box")+"</td>");
 									ArrayList<Integer> indicesIguales = Utilidades.indicesDeHorasIguales(horasLibres, i);
-									%>
-									<td>
-									<div class="btn-group">
-									<button type="button" style="margin-right: 0; margin-left: 0;"
-										class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-										Reservar con: <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-									<%
+									
 									if(indicesIguales.size()==0){
-										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+actual.get("medico")+"</a></li>");
+										out.print("<td><button class='btn btn-primary' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"' data-hora='"+actual.get("hora")+"' data-fecha='"+actual.get("fecha")+"' data-box='"+actual.get("box")+"'>Reservar con: "+actual.get("medico")+"</button></td>");
+// 										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+actual.get("medico")+"</a></li>");
 									}
 									else{
-										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+actual.get("medico")+"</a></li>");
+										%>
+										<td>
+										<div class="btn-group">
+										<button type="button" style="margin-right: 0; margin-left: 0;"
+											class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+											Reservar con: <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+										<%
+										out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"' data-hora='"+actual.get("hora")+"' data-fecha='"+actual.get("fecha")+"' data-box='"+actual.get("box")+"'>"+actual.get("medico")+"</a></li>");
 										for (int j=0; j<indicesIguales.size();j++){
-											out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
+											out.print("<li><a href='#' data-toggle='modal' data-target='#modalReserva' data-idhora='"+actual.get("id")+"' data-hora='"+actual.get("hora")+"' data-fecha='"+actual.get("fecha")+"' data-box='"+actual.get("box")+"'>"+((JSONObject)horasLibres.get(indicesIguales.get(j))).get("medico")+"</a></li>");
 										}
 										abiertos.addAll(indicesIguales);
+										%>
+										<li><a href="#"></a></li>
+										</ul>
+										<td>
+										<%
 									}
-									%>
-									<li><a href="#"></a></li>
-									</ul>
-									<td>
-									<%
+									
 									out.print("<tr>");
 								}
 							}
@@ -212,12 +215,23 @@
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica APS</h4>
+		        <br>
+<!-- 		        <b>Médico:</b> <p id="id-medico"></p> -->
+				<div class="row">
+				  <div class="col-md-4"><b>Fecha:</b> <p id="id-fecha"></p></div>
+				  <div class="col-md-4"><b>Hora:</b> <p id="id-hora"></p></div>
+				  <div class="col-md-4"><b>Box:</b> <p id="id-box"></p></div>
+				</div> 
 		      </div>
 		      <div class="modal-body">
 		        <form id="formReserva" action="Reserva" method="get">
 		          <div class="form-group">
 		            <label for="paciente" class="control-label">ID Paciente:</label>
 		            <input type="text" class="form-control" name="paciente" id="paciente">
+		          </div>
+		          <div class="form-group">
+		            <label for="clave" class="control-label">Clave:</label>
+		            <input type="text" class="form-control" name="clave" id="clave">
 		          </div>
 		            <input type="hidden" class="form-control" name="id" id="id-input">
 		            <input type="hidden" class="form-control" name="tipo" value="APS">

@@ -53,6 +53,12 @@ public class Medico extends HttpServlet {
     		}
     		System.out.println(ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
     		request.setAttribute("horasDeMedico", ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
+    		request.setAttribute("fechaInicio", fechaIn);
+        	request.setAttribute("fechaFinal", fechaFin);
+    	}
+    	else{
+    		request.setAttribute("fechaInicio", "28/05/2015");
+        	request.setAttribute("fechaFinal", "06/06/2015");
     	}
     	
     	request.getRequestDispatcher("vista/medico.jsp").forward(request, response);

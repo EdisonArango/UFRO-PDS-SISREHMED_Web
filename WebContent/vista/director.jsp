@@ -54,14 +54,14 @@
 						<li><label for="fechaIn">Desde:</label>
 							<div class="input-group date input-sidebar">
 								<input type="text" name="fechaIn"
-									class="form-control input-medium" placeholder="DD/MM/AAAA">
+									class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaInicio}">
 								<span class="input-group-addon"><i
 									class="glyphicon glyphicon-calendar"></i> </span>
 							</div></li>
 						<li><label for="fechaFin">Hasta:</label>
 							<div class="input-group date input-sidebar">
 								<input type="text" name="fechaFin"
-									class="form-control input-medium" placeholder="DD/MM/AAAA">
+									class="form-control input-medium" placeholder="DD/MM/AAAA" value="${fechaFinal}">
 								<span class="input-group-addon"><i
 									class="glyphicon glyphicon-calendar"></i> </span>
 							</div></li>
@@ -113,13 +113,13 @@
 						<li><button
 								onclick="cambiarTipoReporte('medicosMasSolicitados')"
 								class="btn btn-primary btn-sm btn-block input-sidebar">
-								<b>Ver médicos mas solicitados</b>
+								<b>Ver médicos más solicitados</b>
 							</button></li>
 						<li class="divider"></li>
 						<li><button
 								onclick="cambiarTipoReporte('pacientesQueMasReservan')"
 								class="btn btn-primary btn-sm btn-block input-sidebar">
-								<b>Ver pacientes que mas reservan</b>
+								<b>Ver pacientes que más reservan</b>
 							</button></li>
 						<li class="divider"></li>
 
@@ -144,7 +144,7 @@
 				<%
 				if(tipo=="indicadoresMedico"){
 					%>
-					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación del médico: <% out.print(request.getAttribute("nombreMedico")); %></h2>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación del médico <i><% out.print(request.getAttribute("nombreMedico")); %></i> en el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
 					<blockquote>
 				  		<p>Porcentaje de ocupación del médico en el rango dado:   <b style="font-size: 2.5em;padding-top:230px;"><% out.print(request.getAttribute("indicadoresMedico")+"%"); %></b></p>
 					</blockquote>
@@ -152,9 +152,9 @@
 				}
 				else if (tipo == "indicadoresBox"){
 					%>
-					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de box: <% out.print(request.getAttribute("nombreBox")); %></h2>
+					<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Indicadores de ocupación de box <i><% out.print(request.getAttribute("nombreBox")); %></i> en el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
 					<blockquote>
-				  		<p>Porcentaje de ocupación del box en el rango dado: <b style="font-size: 2.5em;padding-top:5px;"><% out.print(request.getAttribute("indicadoresBox")+"%"); %></b></p>
+				  		<p>Porcentaje de ocupación del box en el rango: <b style="font-size: 2.5em;padding-top:5px;"><% out.print(request.getAttribute("indicadoresBox")+"%"); %></b></p>
 					</blockquote>
 					<%
 				}
@@ -163,13 +163,13 @@
 					if(tipo=="medicosMasSolicitados"){
 						entidad = "Médico";
 						%>
-						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados</h2>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados el el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
 						<%
 					}
 					else{
 						entidad = "Paciente";
 						%>
-						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Pacientes que mas reservan</h2>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Pacientes que mas reservaron en el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
 						<%
 					}
 				%>

@@ -36,10 +36,20 @@ $(document).ready(function() {
     $('#modalReserva').on('show.bs.modal', function (event) {
     	  var button = $(event.relatedTarget); // Button that triggered the modal
     	  var recipient = button.data('idhora'); // Extract info from data-* attributes
+    	  var medico = button.data('medico');
+    	  var hora = button.data('hora');
+    	  var fecha = button.data('fecha');
+    	  var dia = button.data('dia');
+    	  var box = button.data('box');
     	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     	  var modal = $(this);
     	  modal.find('#id-input').val(recipient);
+    	  modal.find('#id-medico').text(medico);
+    	  modal.find('#id-hora').text(hora);
+    	  modal.find('#id-fecha').text(fecha);
+    	  modal.find('#id-dia').text(dia);
+    	  modal.find('#id-box').text(box);
 	});
     
     $("#botonReservaModal").click(function(e){

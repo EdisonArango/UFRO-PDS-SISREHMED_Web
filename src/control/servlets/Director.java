@@ -49,7 +49,8 @@ public class Director extends HttpServlet {
     			fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
     			fechaFin=fechaIn;
     		}
-    		
+    		request.setAttribute("fechaInicio", fechaIn);
+        	request.setAttribute("fechaFinal", fechaFin);
 			switch (tipo) {
 			case "indicadoresMedico":
 				String idMedico = request.getParameter("medico");
@@ -76,7 +77,10 @@ public class Director extends HttpServlet {
 				break;
 			}
 		}
-    	
+    	else{
+    		request.setAttribute("fechaInicio", "28/05/2015");
+        	request.setAttribute("fechaFinal", "06/06/2015");
+    	}
     	request.getRequestDispatcher("vista/director.jsp").forward(request, response);
     }
 	/**

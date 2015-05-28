@@ -49,6 +49,7 @@ public class Reserva extends HttpServlet {
 		case "APS":
 			int idHoraMedica = Integer.valueOf(request.getParameter("id"));
 			String paciente = request.getParameter("paciente");
+			String clave = request.getParameter("clave");
 			int idPaciente;
 			if(Utilidades.isNumeric(paciente)){
 				idPaciente = Integer.valueOf(paciente);
