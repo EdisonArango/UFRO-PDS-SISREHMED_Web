@@ -39,6 +39,7 @@ public class Medico extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
     	request.setAttribute("medicos", ws.obtenerTodosLosMedicos());
+    	request.setAttribute("pacientes", ws.obtenerTodosLosPacientes());
     	String tipo=request.getParameter("tipoLlamado");
     	String fechaIn,fechaFin;
     	int idMedico;
@@ -51,7 +52,7 @@ public class Medico extends HttpServlet {
     			fechaIn=String.format("%02d",fecha.getDate())+"/"+String.format("%02d",fecha.getMonth()+1)+"/"+(fecha.getYear()+1900);
     			fechaFin=fechaIn;
     		}
-    		System.out.println(ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
+//    		System.out.println(ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
     		request.setAttribute("horasDeMedico", ws.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin));
     		request.setAttribute("fechaInicio", fechaIn);
         	request.setAttribute("fechaFinal", fechaFin);

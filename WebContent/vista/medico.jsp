@@ -162,8 +162,19 @@
 		      <div class="modal-body">
 		        <form id="formReserva" action="Reserva" method="get">
 		          <div class="form-group">
-		            <label for="paciente" class="control-label">ID Paciente:</label>
-		            <input type="text" class="form-control" name="paciente" id="paciente">
+		            <label for="paciente" class="control-label">Paciente:</label>
+<!-- 		            <input type="text" class="form-control" name="paciente" id="paciente"> -->
+					<select class="input-sidebar form-control" name="paciente" id="paciente">
+                        <%
+                            String pacientesJSON = (String)request.getAttribute("pacientes");
+                        	JSONArray pacientes = Utilidades.obtenerArrayJSON(pacientesJSON, "pacientes");
+                            for (int i=0; i<pacientes.size();i++){
+                            	JSONObject actual = (JSONObject)pacientes.get(i);
+                                out.print("<option value='"+actual.get("id")+"'>"+actual.get("nombre")+"</option>");
+                            }
+
+                         %>
+                    </select>
 		          </div>
 		            <input type="hidden" class="form-control" name="id" id="id-input">
 		            <input type="hidden" class="form-control" name="tipo" value="control">

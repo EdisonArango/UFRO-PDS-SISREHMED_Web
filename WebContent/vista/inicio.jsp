@@ -28,27 +28,7 @@
         <title>Sistema de Reserva de Horas Médicas</title>
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="Busqueda">SISREHMED</a>
-              </div>
-              <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                        <li><a href="Medico">Ingreso de médicos</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                        <li><a href="Director">Ingreso de director</a></li>
-                    </ul>
-              </div>
-            </div>
-        </div>
+    	<div id="header"></div>
 
         <div class="container-fluid">
         <div class="row">
@@ -123,7 +103,7 @@
                       <strong>¡${tipoMensaje}!</strong> ${mensaje}
                 </div>
             <% } %>
-                 
+                 <p id="status"></p>
             <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la búsqueda</h2>
           <div class="table-responsive">
 					<table class="table table-striped">
@@ -246,5 +226,7 @@
 		    </div>
 		  </div>
 		</div>
+		
+		<div id="fb-root"></div>
     </body>
 </html>

@@ -40,7 +40,11 @@ public class Reserva extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
     	String tipo = request.getParameter("tipo");
-    	RequestDispatcher rd = request.getRequestDispatcher("Busqueda");
+    	String refer = request.getHeader("Referer");
+    	String[] partesURL = refer.split("/");
+    	String referer = partesURL[partesURL.length-1];
+    	System.out.println(referer);
+    	RequestDispatcher rd = request.getRequestDispatcher(referer);
     	if(tipo==null){
     		rd.forward(request, response);
     	}
@@ -49,12 +53,12 @@ public class Reserva extends HttpServlet {
 		case "APS":
 			int idHoraMedica = Integer.valueOf(request.getParameter("id"));
 			String paciente = request.getParameter("paciente");
+			System.out.println(paciente);
 			String clave = request.getParameter("clave");
 			int idPaciente;
 			if(Utilidades.isNumeric(paciente)){
 				idPaciente = Integer.valueOf(paciente);
-				String resultadoReserva = ws.reservarHoraAPS(idHoraMedica, idPaciente);
-//				System.out.println("Resultado reserva: "+resultadoReserva);
+				String resultadoReserva = ws.reservarHoraAPS(idHoraMedica, idPaciente,clave);
 				if(Utilidades.isNumeric(resultadoReserva)){
 					request.setAttribute("mensaje", "Se ha reservado la hora médica, número de reserva: "+resultadoReserva);
 					request.setAttribute("tipoMensaje", "success");
@@ -73,7 +77,6 @@ public class Reserva extends HttpServlet {
 			}
 			break;
 		case "control"://Solo reserva una hora, se pueden reservar horas consecutivas también
-			rd = request.getRequestDispatcher("Medico");
 			int[] idHoras = {Integer.valueOf(request.getParameter("id"))};
 			String pacient = request.getParameter("paciente");
 			int idPacient;
@@ -81,7 +84,7 @@ public class Reserva extends HttpServlet {
 				idPacient = Integer.valueOf(pacient);
 				String resultadoReserva = ws.reservarHoraControl(Utilidades.enterosACadena(idHoras), idPacient);
 //				System.out.println("Resultado reserva: "+resultadoReserva);
-				if(!resultadoReserva.equals("Error")){
+				if(Utilidades.isNumeric(resultadoReserva.substring(0, 1))){
 					request.setAttribute("mensaje", "Se han reservado las horas médicas, número de reserva: "+resultadoReserva.substring(0, resultadoReserva.length()));
 					request.setAttribute("tipoMensaje", "success");
 					rd.forward(request, response);

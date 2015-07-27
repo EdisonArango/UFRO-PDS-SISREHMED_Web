@@ -17,6 +17,30 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+.borde{
+	border-bottom: 3px solid #ddd;
+}
+
+.bordeDerecho{
+	border-right: 3px solid #ddd;
+}
+
+.margenesLaterales {
+	margin-right:0px;
+	margin-left:0px;
+}
+
+.margenAbajo{
+	margin-bottom:2px;
+}
+
+.margenArriba{
+	margin-top:7px;
+}
+
+.centrado {
+    margin: auto;
+}
 /*
  * Top navigation
  * Hide default border to remove 1px line.

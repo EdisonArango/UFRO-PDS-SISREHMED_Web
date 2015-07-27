@@ -163,7 +163,7 @@
 					if(tipo=="medicosMasSolicitados"){
 						entidad = "Médico";
 						%>
-						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados el el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
+						<h2 class="sub-header" style="padding-top: -13px; margin-top: -13px;">Médicos mas solicitados en el rango <i>${fechaInicio} - ${fechaFinal}</i></h2>
 						<%
 					}
 					else{

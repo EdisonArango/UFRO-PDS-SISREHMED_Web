@@ -5,32 +5,19 @@
  */
 
 $(document).ready(function() {
-//    setTimeout(function() {
-//        $(".mensaje").fadeOut(1500);
-//    },2000);
-//    
-//    
-//        $('#busqueda').keyup(function() {
-//            var $rows = $('.tablacancion');
-//            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-//            
-//            $rows.show().filter(function() {
-//                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-//                return !~text.indexOf(val);
-//            }).hide();
-//    });
-//
-//    $("#contenido").load("CancionesServlet?type=pagina");
+	
+	//Carga de vistas
+	$("#header").load("Vista?tipo=header");
     
     //Datepicker
     $('.input-group.date').datepicker({
-                        format: "dd/mm/yyyy",
-                        startDate: "today",
-                        endDate: "+100d",
-                        orientation: "top auto",
-                        autoclose: true,
-                        todayBtn: "linked",
-                        language: "es"
+                format: "dd/mm/yyyy",
+                startDate: "today",
+                endDate: "+100d",
+                orientation: "top auto",
+                autoclose: true,
+                todayBtn: "linked",
+                language: "es"
     });
     
     $('#modalReserva').on('show.bs.modal', function (event) {
@@ -56,6 +43,48 @@ $(document).ready(function() {
         $("#formReserva").submit();
     });
     
+//    $('#buscarActividades').keyup(function() {
+//        var $rows = $('.opcActividades');
+//        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+//        
+//        $rows.show().filter(function() {
+//            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+//            return !~text.indexOf(val);
+//        }).hide();
+//        
+//    });
+    
+    //Método de busqueda
+    jQuery.fn.filterByText = function(textbox) {
+        return this.each(function() {
+            var select = this;
+            var options = [];
+            $(select).find('option').each(function() {
+                options.push({value: $(this).val(), text: $(this).text()});
+            });
+            $(select).data('options', options);
+
+            $(textbox).bind('change keyup', function() {
+                var options = $(select).empty().data('options');
+                var search = $.trim($(this).val());
+                var regex = new RegExp(search,"gi");
+
+                $.each(options, function(i) {
+                    var option = options[i];
+                    if(option.text.match(regex) !== null) {
+                        $(select).append(
+                            $('<option>').text(option.text).val(option.value)
+                        );
+                    }
+                });
+            });
+        });
+    };
+    
+    
+    $('#actividad').filterByText($('#buscarActividades'));
+    $('#procedimiento').filterByText($('#buscarProcedimiento'));
+    
     
 });
 
@@ -78,28 +107,4 @@ $(document).ready(function() {
 
     
 
-
-
-//function agregarPlayList (){
-//    var insert = "<form class='form-inline' method='post' action='PlayListServlet' >\n\
-//                   <div class='form-group'> <b>Nombre: </b><input type='text' class='form-control' name='nombre'>\n\
-//    <input type='hidden' name='type' value='nuevo'>\n\
-//        <input type='submit' class='form-control' value='Crear'> </div>\n\
-//<form>";
-//    document.getElementById("agregarPlayList").innerHTML = insert;
-//}
-//
-//function cargarPlayList (url){
-//    $("#contenido").load(url);
-//}
-///**
-// * Comment
-// */
-//function eliminarUsuario(usuario) {
-//    if (confirm("Estas seguro que deseas eliminar al usuario: "+usuario) == true) {
-//        document.getElementById("frame").src = window.location.protocol + "//" +window.location.host + "/Login-MVC-JSP/Modificar?usuario="+usuario+"&tipomodificacion=eliminar";
-//    } else {
-//        return;
-//    }
-//}
 
