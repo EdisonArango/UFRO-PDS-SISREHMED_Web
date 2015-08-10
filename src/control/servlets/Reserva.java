@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import control.util.Utilidades;
 import control.webservices.SISREHMED_WS;
@@ -45,6 +46,7 @@ public class Reserva extends HttpServlet {
     	String referer = partesURL[partesURL.length-1];
     	System.out.println(referer);
     	RequestDispatcher rd = request.getRequestDispatcher(referer);
+    	HttpSession sesion = request.getSession();
     	if(tipo==null){
     		rd.forward(request, response);
     	}
@@ -60,19 +62,16 @@ public class Reserva extends HttpServlet {
 				idPaciente = Integer.valueOf(paciente);
 				String resultadoReserva = ws.reservarHoraAPS(idHoraMedica, idPaciente,clave);
 				if(Utilidades.isNumeric(resultadoReserva)){
-					request.setAttribute("mensaje", "Se ha reservado la hora médica, número de reserva: "+resultadoReserva);
-					request.setAttribute("tipoMensaje", "success");
+					sesion.setAttribute("mensaje", "success;Bien!;Se ha reservado la hora médica, número de reserva: "+resultadoReserva);
 					rd.forward(request, response);
 				}
 				else{
-					request.setAttribute("mensaje", resultadoReserva);
-					request.setAttribute("tipoMensaje", "danger");
+					sesion.setAttribute("mensaje", "danger;Error!;"+resultadoReserva);
 					rd.forward(request, response);
 				}
 			}
 			else{
-				request.setAttribute("mensaje", "Error en los parámetros");
-				request.setAttribute("tipoMensaje", "danger");
+				sesion.setAttribute("mensaje", "danger;Error!;Error en los parámetros");
 				rd.forward(request, response);
 			}
 			break;
@@ -85,19 +84,16 @@ public class Reserva extends HttpServlet {
 				String resultadoReserva = ws.reservarHoraControl(Utilidades.enterosACadena(idHoras), idPacient);
 //				System.out.println("Resultado reserva: "+resultadoReserva);
 				if(Utilidades.isNumeric(resultadoReserva.substring(0, 1))){
-					request.setAttribute("mensaje", "Se han reservado las horas médicas, número de reserva: "+resultadoReserva.substring(0, resultadoReserva.length()));
-					request.setAttribute("tipoMensaje", "success");
+					sesion.setAttribute("mensaje", "success;Bien!;Se han reservado las horas médicas, número de reserva: "+resultadoReserva.substring(0, resultadoReserva.length()));
 					rd.forward(request, response);
 				}
 				else{
-					request.setAttribute("mensaje", resultadoReserva);
-					request.setAttribute("tipoMensaje", "danger");
+					sesion.setAttribute("mensaje", "danger;Error!;"+resultadoReserva);
 					rd.forward(request, response);
 				}
 			}
 			else{
-				request.setAttribute("mensaje", "Error en los parámetros");
-				request.setAttribute("tipoMensaje", "danger");
+				sesion.setAttribute("mensaje", "danger;Error!;Error en los parámetros");
 				rd.forward(request, response);
 			}
 			break;

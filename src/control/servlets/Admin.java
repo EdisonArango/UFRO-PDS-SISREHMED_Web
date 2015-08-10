@@ -8,51 +8,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Vista
+ * Servlet implementation class Admin
  */
-@WebServlet("/Vista")
-public class Vista extends HttpServlet {
+@WebServlet("/Admin")
+public class Admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Vista() {
+    public Admin() {
         super();
         // TODO Auto-generated constructor stub
     }
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        String tipo = request.getParameter("tipo");
-        if (tipo==null) {
-            return;
-        }
-        switch (tipo){
-            case "header":
-                request.getRequestDispatcher("vista/elementos/header.jsp").forward(request, response);
-                break;
-            case "mensaje":
-                request.getRequestDispatcher("vista/elementos/mensaje.jsp").forward(request, response);
-                break;
-            default:
-                System.out.println("Elemento no encontrado");
-        }
+    protected void processRequest (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	request.getRequestDispatcher("vista/admin.jsp").forward(request, response);
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		processRequest(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		processRequest(request,response);
 	}
 
 }

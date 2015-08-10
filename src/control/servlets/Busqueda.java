@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 
@@ -41,7 +42,7 @@ public class Busqueda extends HttpServlet {
             throws ServletException, IOException{
         
         String tipo = request.getParameter("tipo");
-        
+        HttpSession sesion = request.getSession();
         request.setAttribute("medicos", ws.obtenerTodosLosMedicos());
         request.setAttribute("especialidades", ws.obtenerEspecialidades());
         String fechaIn="",fechaFin="";
@@ -67,12 +68,11 @@ public class Busqueda extends HttpServlet {
         switch (tipo) {
             case "medico":
                 int idMedico=0;
-                if (Utilidades.isNumeric(request.getParameter("medico"))) {
+                if (request.getParameter("medico")!=null&&Utilidades.isNumeric(request.getParameter("medico"))) {
                     idMedico = Integer.valueOf(request.getParameter("medico"));
                 }
                 else{
-                    request.setAttribute("mensaje", "No es válido el médico indicado");
-                    request.setAttribute("tipoMensaje", "warning"); //success,warning
+                    sesion.setAttribute("mensaje", "warning;Error!;No es válido el médico indicado");
                     request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                     return;
                 }
@@ -80,8 +80,7 @@ public class Busqueda extends HttpServlet {
 //                System.out.println(horasEncontradas);
                 JSONArray arrayHoras = Utilidades.obtenerArrayJSON(horasEncontradas, "horasEncontradas");
                 if (arrayHoras.isEmpty()) {
-                    request.setAttribute("mensaje", "No hay horas disponibles para la busqueda indicada");
-                    request.setAttribute("tipoMensaje", "warning"); //success,warning
+                    sesion.setAttribute("mensaje", "warning;Lo sentimos!;No hay horas disponibles para la busqueda indicada");
                     request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                     return;
                 }
@@ -92,9 +91,15 @@ public class Busqueda extends HttpServlet {
                 break;
             case "especialidad":
                 int idEspecialidad = Integer.valueOf(request.getParameter("especialidad"));
+                String horasEncontradas2 = ws.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin);
+                JSONArray arrayHoras2 = Utilidades.obtenerArrayJSON(horasEncontradas2, "horasEncontradas");
+                if (arrayHoras2.isEmpty()) {
+                    sesion.setAttribute("mensaje", "warning;Lo sentimos!;No hay horas disponibles para la busqueda indicada");
+                    request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
+                    return;
+                }
                 request.setAttribute("tipoBusqueda", "busquedaPorEspecialidad");
-//                System.out.print(ws.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin));
-                request.setAttribute("horasLibres",ws.buscarHoraAPSPorEspecialidad(idEspecialidad, fechaIn, fechaFin));
+                request.setAttribute("horasLibres",horasEncontradas2);
                 request.setAttribute("fechasRango", Utilidades.diasDeRango(fechaIn, fechaFin));
                 request.getRequestDispatcher("vista/inicio.jsp").forward(request, response);
                 break;

@@ -8,6 +8,7 @@ $(document).ready(function() {
 	
 	//Carga de vistas
 	$("#header").load("Vista?tipo=header");
+	$("#mensaje").load("Vista?tipo=mensaje");
     
     //Datepicker
     $('.input-group.date').datepicker({

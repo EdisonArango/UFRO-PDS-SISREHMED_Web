@@ -94,31 +94,27 @@
           </form> 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            
-            <% 
-                String mensaje = (String)request.getAttribute("mensaje");
-                if(mensaje!=null&&mensaje!=""){ %>
-                <div style="padding-left: 26%;" class="alert alert-${tipoMensaje} alert-dismissable mensaje">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>¡${tipoMensaje}!</strong> ${mensaje}
-                </div>
-            <% } %>
-                 <p id="status"></p>
-            <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la búsqueda</h2>
-          <div class="table-responsive">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Hora</th>
-								<th>Fecha</th>
-								<th>Box</th>
-								<th>Reserva</th>
-							</tr>
-						</thead>
-						<tbody>
+         
+         <div id="mensaje"></div>   
+           
+          <p id="status"></p>
+          
 						<%
 							String tipo = (String) request.getAttribute("tipoBusqueda");
-							if (tipo != null && tipo.equals("busquedaPorMedico")) {
+						if (tipo!=null){ %>
+						<h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la búsqueda</h2>
+          					<div class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Hora</th>
+										<th>Fecha</th>
+										<th>Box</th>
+										<th>Reserva</th>
+									</tr>
+								</thead>
+								<tbody>
+							<% if (tipo.equals("busquedaPorMedico")) {
 								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
 								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
 								for (int i = 0; i < horasLibres.size(); i++) {
@@ -133,7 +129,7 @@
 									out.print("<tr>");
 								}
 							}
-							else if(tipo != null && tipo.equals("busquedaPorEspecialidad")){
+							else if(tipo.equals("busquedaPorEspecialidad")){
 								String horasMedicasJSON = (String) request.getAttribute("horasLibres");
 								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
 								ArrayList<Integer> abiertos = new ArrayList<Integer>();
@@ -179,11 +175,14 @@
 									out.print("<tr>");
 								}
 							}
-						%>
-										
+						}
+						if (tipo!=null){ %>				
 						</tbody>
 					</table>
 			</div>
+			<%} else {%>
+				<p class="text-center lead" style="margin-top:25%;">  -- Sin resultados -- <br> Realice una busqueda en el formulario de la sección izquierda </p>
+			<%} %>
         </div>
       </div>
         </div>

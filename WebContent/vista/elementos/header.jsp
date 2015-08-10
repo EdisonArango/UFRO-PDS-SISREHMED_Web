@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <script>
+
 		 // This is called with the results from from FB.getLoginStatus().
 	    function statusChangeCallback(response) {
 	      console.log('statusChangeCallback');
@@ -12,19 +13,7 @@
 	      // for FB.getLoginStatus().
 	      if (response.status === 'connected') {
 	        // Logged into your app and Facebook.
-// 	        $("#ul-menu-login").hide();
-	        $("#ul-perfil").show();
-       		/* make the API Graph call */
-       		FB.api(
-       		    "/me/picture?type=square",
-       		    function (response) {
-       		      if (response && !response.error) {
-       		    	$("#imagen-perfil").attr("src",response.data.url);
-       		      }
-       		    }
-       		);
-	       	
-	        testAPI();
+	        login();
 	      } else if (response.status === 'not_authorized') {
 	        // The person is logged into Facebook, but not your app.
 	        document.getElementById('status').innerHTML = 'Please log ' +
@@ -41,7 +30,6 @@
 	    // Button.  See the onlogin handler attached to it in the sample
 	    // code below.
 	    function checkLoginState() {
-	 		alert("Usuario se registró");
 	      FB.getLoginStatus(function(response) {
 	        statusChangeCallback(response);
 	      });
@@ -67,9 +55,13 @@
 		    //
 		    // These three cases are handled in the callback function.
 
-// 		    FB.getLoginStatus(function(response) {
-// 		      statusChangeCallback(response);
-// 		    });
+		    FB.getLoginStatus(function(response) {
+// 			        estado();
+			        /* make the API Graph call */
+		       		<% if(session.getAttribute("id_facebook")!=null){ %>
+		       			imagenPerfil('<%=session.getAttribute("id_facebook")%>');
+		       		<% } %>
+		    });
 		  };
 		
 		  (function(d, s, id){
@@ -80,23 +72,38 @@
 		     fjs.parentNode.insertBefore(js, fjs);
 		   }(document, 'script', 'facebook-jssdk'));
 		  
-		  function testAPI() {
+		  function login() {
 			    console.log('Welcome!  Fetching your information.... ');
 			    FB.api('/me', function(response) {
-// 			      console.log('Successful login for: ' + response.name);
-// 			      $("#nombre-usuario").html(response.name);
+			      console.log('Successful login for: ' + response.name);
 // 			      document.getElementById('status').innerHTML =
 // 			        'Gracias por loguearse '+response.name+", " + JSON.stringify(response) + '!';
 		    	  $("#login-datos").val(JSON.stringify(response));
 		    	  $("#form-login").submit();
 			    });
 		}
-		</script>
-		<script>
+		  
+		  function estado() {
+			    console.log('Welcome!  Fetching your information.... ');
+			    FB.api('/me', function(response) {
+			      console.log('Successful login for: ' + response.name);
+			      document.getElementById('status').innerHTML =
+			        'Gracias por loguearse '+response.name+", " + JSON.stringify(response) + '!';
+			    });
+			}
+		  
+		  function imagenPerfil(id) {
+			  FB.api('/'+id+'/picture?type=square', function(response) {
+						$("#imagen-perfil").attr("src",response.data.url);
+			    });
+		  }
+		  
 		$(document).ready(function() {
+			
 			$('#li-menu-login').click(function (e) {
 		        e.stopPropagation();
 		    });
+			
 		});
 		</script>
 		<form id="form-login" method="post" action="Login">
@@ -114,21 +121,22 @@
                 <a class="navbar-brand" href="Busqueda">SISREHMED</a>
               </div>
               <div class="navbar-collapse collapse">
-                 
-                 <ul class="nav navbar-nav navbar-right" style="padding-right: 15px;display:none;" id="ul-perfil">
+               
+              <% if(session.getAttribute("id")!=null){ %>
+                 <ul class="nav navbar-nav navbar-right" style="padding-right: 15px;">
                     <li class="dropdown">
                         <a href="#" style="padding:0px;padding-top:10px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span><img id="imagen-perfil" style="width:30px;height:30px;" src=""></span>
-                        <strong id="nombre-usuario"></strong>
+                        <strong><%=session.getAttribute("nombre")%></strong>
                          <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="margin-top:10px;">
-                                <li><a href="Login">Administración</a></li>
+                                <li><a href="#">Administración</a></li>
                           <li><a href="Login?tipo=cerrarSesion">Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 </ul>
-                 
-              	<ul class="nav navbar-nav navbar-right" style="padding-right: 15px" id="ul-menu-login">
+               <% } else {%>
+              	<ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
                  	<li>
                  	<!-- Login -->
                  	<a class="dropdown-toggle" href="#" data-toggle="dropdown">Iniciar sesión<strong class="caret"></strong></a>
@@ -154,6 +162,8 @@
 					</ul>
                  	</li>
                  </ul>
+                 
+                 <%} %>
                  <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
                      <li><a href="Medico">Ingreso de médicos</a></li>
                  </ul>

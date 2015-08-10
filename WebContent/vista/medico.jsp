@@ -89,16 +89,9 @@
           </form> 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        
+        <div id="mensaje"></div>
             
-            <% 
-                String mensaje = (String)request.getAttribute("mensaje");
-                if(mensaje!=null&&mensaje!=""){ %>
-                <div style="padding-left: 26%;" class="alert alert-${tipoMensaje} alert-dismissable mensaje">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>¡${tipoMensaje}!</strong> ${mensaje}
-                </div>
-            <% } %>
-                 
             <h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Horario</h2>
           <div class="table-responsive">
 					<table class="table table-striped">

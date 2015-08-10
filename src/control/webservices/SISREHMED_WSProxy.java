@@ -74,40 +74,16 @@ public class SISREHMED_WSProxy implements control.webservices.SISREHMED_WS {
     return sISREHMED_WS.obtenerPacientesQueMasReservan(fechaIn, fechaFin);
   }
   
-  public java.lang.String obtenerTodosLosPacientes() throws java.rmi.RemoteException{
+  public java.lang.String loginPacienteFacebook(java.lang.String datos) throws java.rmi.RemoteException{
     if (sISREHMED_WS == null)
       _initSISREHMED_WSProxy();
-    return sISREHMED_WS.obtenerTodosLosPacientes();
-  }
-  
-  public java.lang.String buscarHoraAPSPorMedico(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException{
-    if (sISREHMED_WS == null)
-      _initSISREHMED_WSProxy();
-    return sISREHMED_WS.buscarHoraAPSPorMedico(idMedico, fechaIn, fechaFin);
+    return sISREHMED_WS.loginPacienteFacebook(datos);
   }
   
   public java.lang.String obtenerTodosLosMedicos() throws java.rmi.RemoteException{
     if (sISREHMED_WS == null)
       _initSISREHMED_WSProxy();
     return sISREHMED_WS.obtenerTodosLosMedicos();
-  }
-  
-  public java.lang.String obtenerEspecialidades() throws java.rmi.RemoteException{
-    if (sISREHMED_WS == null)
-      _initSISREHMED_WSProxy();
-    return sISREHMED_WS.obtenerEspecialidades();
-  }
-  
-  public java.lang.String buscarSusHorasMedicas(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException{
-    if (sISREHMED_WS == null)
-      _initSISREHMED_WSProxy();
-    return sISREHMED_WS.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin);
-  }
-  
-  public java.lang.String reservarHoraAPS(int idHoraMedica, int idPaciente, java.lang.String clave) throws java.rmi.RemoteException{
-    if (sISREHMED_WS == null)
-      _initSISREHMED_WSProxy();
-    return sISREHMED_WS.reservarHoraAPS(idHoraMedica, idPaciente, clave);
   }
   
   public java.lang.String reservarHoraControl(java.lang.String idshorasMedicas, int idPaciente) throws java.rmi.RemoteException{
@@ -132,6 +108,36 @@ public class SISREHMED_WSProxy implements control.webservices.SISREHMED_WS {
     if (sISREHMED_WS == null)
       _initSISREHMED_WSProxy();
     return sISREHMED_WS.obtenerNombreDeBox(idBox);
+  }
+  
+  public java.lang.String obtenerEspecialidades() throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.obtenerEspecialidades();
+  }
+  
+  public java.lang.String reservarHoraAPS(int idHoraMedica, int idPaciente, java.lang.String clave) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.reservarHoraAPS(idHoraMedica, idPaciente, clave);
+  }
+  
+  public java.lang.String buscarSusHorasMedicas(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.buscarSusHorasMedicas(idMedico, fechaIn, fechaFin);
+  }
+  
+  public java.lang.String buscarHoraAPSPorMedico(int idMedico, java.lang.String fechaIn, java.lang.String fechaFin) throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.buscarHoraAPSPorMedico(idMedico, fechaIn, fechaFin);
+  }
+  
+  public java.lang.String obtenerTodosLosPacientes() throws java.rmi.RemoteException{
+    if (sISREHMED_WS == null)
+      _initSISREHMED_WSProxy();
+    return sISREHMED_WS.obtenerTodosLosPacientes();
   }
   
   
