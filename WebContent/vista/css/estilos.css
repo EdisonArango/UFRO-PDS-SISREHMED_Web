@@ -49,6 +49,10 @@ body {
   border: 0;
 }
 
+.nav-admin > li{
+	border-bottom: 1px solid #dcdcdc;
+}
+
 /*
  * Sidebar
  */
@@ -71,6 +75,11 @@ body {
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
     width: 20%;
+  }
+  
+  .sidebar-admin {
+  	padding :0;
+  	margin-top: 20px;
   }
 }
 
@@ -118,11 +127,16 @@ body {
 .main {
   padding: 20px;
 }
+
 @media (min-width: 768px) {
   .main {
     padding-right: 20px;
     padding-left: 60px;
   }
+  .main-admin {
+	padding: 0 10px 10px 10px;
+	margin-left: 20%;
+	}
 }
 .main .page-header {
   margin-top: 0;
