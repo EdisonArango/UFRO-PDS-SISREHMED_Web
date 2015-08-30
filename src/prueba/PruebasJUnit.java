@@ -25,5 +25,12 @@ public class PruebasJUnit {
 		System.out.println(actual.get("nombre"));
 		assertTrue(respuesta!=null);
 	}
+	
+	@Test
+	public void login() throws RemoteException {
+		SISREHMED_WS ws = new SISREHMED_WSProxy();
+		String respuesta = ws.login("admin", "123abcd");
+		assertTrue(respuesta.startsWith("{"));
+	}
 
 }

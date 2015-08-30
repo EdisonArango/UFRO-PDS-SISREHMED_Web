@@ -21,6 +21,14 @@ $(document).ready(function() {
                 language: "es"
     });
     
+    $('#dia-hora-medica').datepicker({
+    	format: "dd/mm/yyyy",
+        language: "es"
+    }).on('changeDate', function(e){
+    	$("#fecha").val($("#dia-hora-medica").datepicker('getFormattedDate'));
+    });
+    
+    
     $('#modalReserva').on('show.bs.modal', function (event) {
     	  var button = $(event.relatedTarget); // Button that triggered the modal
     	  var recipient = button.data('idhora'); // Extract info from data-* attributes
@@ -42,18 +50,7 @@ $(document).ready(function() {
     
     $("#botonReservaModal").click(function(e){
         $("#formReserva").submit();
-    });
-    
-//    $('#buscarActividades').keyup(function() {
-//        var $rows = $('.opcActividades');
-//        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-//        
-//        $rows.show().filter(function() {
-//            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-//            return !~text.indexOf(val);
-//        }).hide();
-//        
-//    });
+    });;
     
     //Método de busqueda
     jQuery.fn.filterByText = function(textbox) {
@@ -83,9 +80,27 @@ $(document).ready(function() {
     };
     
     
-    $('#actividad').filterByText($('#buscarActividades'));
-    $('#procedimiento').filterByText($('#buscarProcedimiento'));
+    $('#medico').filterByText($('#buscarMedico'));
+    $('#box').filterByText($('#buscarBox'));
     
+    //Alternar vistas de horas
+    $("#boton-listado").on("click",function(){
+    	$("#tabla-listado").show(400);
+    	$("#tabla-calendar").hide(300);
+    	$("#boton-listado").removeClass("btn-default");
+    	$("#boton-listado").addClass("btn-dark");
+    	$("#boton-calendar").removeClass("btn-dark");
+    	$("#boton-calendar").addClass("btn-default");
+    });
+    
+    $("#boton-calendar").on("click",function(){
+    	$("#tabla-calendar").show(400);
+    	$("#tabla-listado").hide(300);
+    	$("#boton-listado").removeClass("btn-dark");
+    	$("#boton-listado").addClass("btn-default");
+    	$("#boton-calendar").removeClass("btn-default");
+    	$("#boton-calendar").addClass("btn-dark");
+    });
     
 });
 

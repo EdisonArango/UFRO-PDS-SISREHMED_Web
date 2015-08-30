@@ -107,6 +107,7 @@
 		});
 		</script>
 		<form id="form-login" method="post" action="Login">
+			<input type="hidden" name="tipo" value="login-facebook">
 			<input type="hidden" id="login-datos" name="datos" value="">		
 		</form>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -126,11 +127,24 @@
                  <ul class="nav navbar-nav navbar-right" style="padding-right: 15px;">
                     <li class="dropdown">
                         <a href="#" style="padding:0px;padding-top:10px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span><img id="imagen-perfil" style="width:30px;height:30px;" src=""></span>
+                        <span>
+                        <% if(session.getAttribute("id_facebook")!=null){ %>
+                        	<img id="imagen-perfil" style="width:30px;height:30px;border: 1px solid #FFFFFF;" src="">
+                        <%} else{ %>
+                        	<img  style="width:30px;height:30px;border: 1px solid #FFFFFF;" src="vista/recursos/profile.png">
+                        <% } %>
+                        </span>
                         <strong><%=session.getAttribute("nombre")%></strong>
                          <span class="caret"></span></a>
                         <ul class="dropdown-menu" style="margin-top:10px;">
-                                <li><a href="#">Administración</a></li>
+                          <li><a href="Busqueda">Busqueda de cupos</a></li>
+                          <% if(session.getAttribute("rol").equals("administrador")) {%>
+                          <li><a href="Admin">Administración</a></li>
+                          <% } else if(session.getAttribute("rol").equals("medico")) {%>
+                          <li><a href="Medico">Médico</a></li>
+                          <% } else  if(session.getAttribute("rol").equals("director")) {%>
+                          <li><a href="Director">Dirección</a></li>
+                          <% } %>
                           <li><a href="Login?tipo=cerrarSesion">Cerrar Sesión</a></li>
                         </ul>
                     </li>
@@ -146,15 +160,16 @@
                  			<fb:login-button scope="public_profile,email" data-size="xlarge" onlogin="checkLoginState();"></fb:login-button> 
                			</p>
 						<div class="divider"></div>
-						<form method="post" action="login" accept-charset="UTF-8">
+						<form method="post" action="Login" accept-charset="UTF-8">
+							<input type="hidden" name="tipo" value="login">
 							<div class="input-group" style="margin-bottom: 10px;">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-								<input type="text" class="form-control" placeholder="Correo o Usuario" id="username" name="username">
+								<input type="text" class="form-control" placeholder="Correo o Usuario" id="usuario" name="usuario">
 							</div>
 										
 							<div class="input-group" style="margin-bottom: 15px;">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-								<input  type="password" class="form-control" placeholder="Contraseña" id="password" name="password">
+								<input  type="password" class="form-control" placeholder="Contraseña" id="pass" name="pass">
 							</div>
 							<button class="btn btn-primary" style="margin-bottom: 15px;float:right;" type="submit"><b>Iniciar sesión</b></button>
 						</form>
@@ -164,12 +179,12 @@
                  </ul>
                  
                  <%} %>
-                 <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                     <li><a href="Medico">Ingreso de médicos</a></li>
-                 </ul>
-                 <ul class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                     <li><a href="Director">Ingreso de director</a></li>
-                 </ul>
+<!--                  <ul class="nav navbar-nav navbar-right" style="padding-right: 15px"> -->
+<!--                      <li><a href="Medico">Ingreso de médicos</a></li> -->
+<!--                  </ul> -->
+<!--                  <ul class="nav navbar-nav navbar-right" style="padding-right: 15px"> -->
+<!--                      <li><a href="Director">Ingreso de director</a></li> -->
+<!--                  </ul> -->
               </div>
             </div>
         </div>

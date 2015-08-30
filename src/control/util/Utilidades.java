@@ -5,9 +5,17 @@
  */
 package control.util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -189,6 +197,49 @@ public class Utilidades {
 			}
 		}
     	return cadena;
+    }
+    
+    public static String referer (HttpServletRequest request){
+    	String refer = request.getHeader("Referer");
+    	String[] partesURL = refer.split("/");
+    	return partesURL[partesURL.length-1];
+    }
+    
+    public static JSONObject stringAJSONObject (String cadenaJSON){
+    	Object obj=JSONValue.parse(cadenaJSON);
+		return (JSONObject)obj;
+    }
+    
+    public static Date stringADate(String fecha) throws ParseException{
+    	DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        return f.parse(fecha);
+    }
+    
+    public static String dateAString (Date fecha){
+    	return String.format("%02d",fecha.getDate()) + "/" + String.format("%02d",(fecha.getMonth()+1)) + "/" + (fecha.getYear()+1900);
+    }
+    
+    public static boolean fechaDentroDeRango (String fechaS, String fechaInS, String fechaFinS) throws ParseException{
+        DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha = f.parse(fechaS);
+        Date fechaIn = f.parse(fechaInS);
+        Date fechaFin = f.parse(fechaFinS);
+//        System.out.println(fechaInS+">>"+fechaS+">>"+fechaFinS);
+        Calendar calFecha = new GregorianCalendar();
+        calFecha.setTime(fecha);
+        calFecha.set(Calendar.HOUR_OF_DAY, 5);
+        Calendar calFechaIn = new GregorianCalendar();
+        calFechaIn.setTime(fechaIn);
+        calFechaIn.set(Calendar.HOUR_OF_DAY, 1);
+        Calendar calFechaFin = new GregorianCalendar();
+        calFechaFin.setTime(fechaFin);
+        calFechaFin.set(Calendar.HOUR_OF_DAY, 10);
+        if (calFecha.after(calFechaIn)&&calFecha.before(calFechaFin)) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }

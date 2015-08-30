@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import control.util.Utilidades;
 import control.webservices.SISREHMED_WS;
 import control.webservices.SISREHMED_WSProxy;
 
@@ -33,13 +34,49 @@ public class Login extends HttpServlet {
     protected void processRequest (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String tipo = request.getParameter("tipo");
 		HttpSession sesion = request.getSession();
-		if(tipo==null){
-			tipo = "login";
+		if(tipo==null||tipo==""){
+			sesion.setAttribute("mensaje", "danger;Error!;Parámetros inválidos");
+			response.sendRedirect("");
+			return;
 		}
+		SISREHMED_WS ws = new SISREHMED_WSProxy();
 		switch (tipo){
 			case "login":
+				String usuario = request.getParameter("usuario");
+				String pass = request.getParameter("pass");
+				if (usuario == null || usuario.equals("")){
+					sesion.setAttribute("mensaje", "warning;Usuario Faltante!;Ingrese el usuario");
+					response.sendRedirect("");
+					return;
+				}
+				else if(pass == null || pass.equals("")){
+					sesion.setAttribute("mensaje", "warning;Contraseña faltante!;Ingrese la contraseña");
+					response.sendRedirect("");
+					return;
+				}
+				String respuest = ws.login(usuario, pass);
+				Object object=JSONValue.parse(respuest);
+				JSONObject resp = (JSONObject)object;
+				String next = "";
+				if (resp.get("mensaje").toString().startsWith("success")){
+					sesion.setAttribute("id",resp.get("id").toString());
+					sesion.setAttribute("nombre",resp.get("nombre").toString());
+					sesion.setAttribute("rol",resp.get("rol").toString());
+					if (resp.get("rol").toString().equals("administrador")){
+						next = "Admin";
+					}
+					else if (resp.get("rol").toString().equals("medico")){
+						next = "Medico";
+					}
+					else if (resp.get("rol").toString().equals("director")){
+						next = "Director";
+					}
+				}
+				sesion.setAttribute("mensaje", resp.get("mensaje").toString());
+				response.sendRedirect(next);
+				break;
+			case "login-facebook":
 				String datosUsuario = request.getParameter("datos");
-				SISREHMED_WS ws = new SISREHMED_WSProxy();
 				String respuestaJSON = ws.loginPacienteFacebook(datosUsuario);
 				Object obj=JSONValue.parse(respuestaJSON);
 				JSONObject respuesta = (JSONObject)obj;
@@ -47,6 +84,7 @@ public class Login extends HttpServlet {
 					sesion.setAttribute("id",respuesta.get("id").toString());
 					sesion.setAttribute("id_facebook",respuesta.get("id_facebook").toString());
 					sesion.setAttribute("nombre",respuesta.get("nombre").toString());
+					sesion.setAttribute("rol","paciente");
 				}
 				sesion.setAttribute("mensaje", respuesta.get("mensaje").toString());
 				response.sendRedirect("");

@@ -17,6 +17,25 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+.datepicker-inline{
+	margin: auto;
+}
+
+.txt-mediano{
+	font-size: 1.3em;
+}
+
+.sidebar-titulo{
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 5px;
+	font-size: 85%;
+	font-weight: normal;
+	letter-spacing: 1px;
+	color: #51586a;
+	text-transform: uppercase;
+}
+
 .borde{
 	border-bottom: 3px solid #ddd;
 }
@@ -49,8 +68,20 @@ body {
   border: 0;
 }
 
-.nav-admin > li{
-	border-bottom: 1px solid #dcdcdc;
+.nav-admin > li > a{
+	color: #000000;
+}
+
+.active{
+	background: #000000;
+}
+
+.active:hover{
+	background: #000000 !important;
+}
+
+.active > a{
+	color: #FFFFFF !important;
 }
 
 /*
@@ -136,6 +167,7 @@ body {
   .main-admin {
 	padding: 0 10px 10px 10px;
 	margin-left: 20%;
+	width: 80%;
 	}
 }
 .main .page-header {
@@ -177,5 +209,11 @@ tbody > tr > td {
 .dividerDelgado{
 	border-bottom: 1px solid #ccc;
 	margin-bottom: 15px;
+}
+
+.aol{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
 }
 

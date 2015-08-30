@@ -8,6 +8,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.json.simple.JSONArray"%>
+<%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -103,7 +104,23 @@
 							String tipo = (String) request.getAttribute("tipoBusqueda");
 						if (tipo!=null){ %>
 						<h2 class="sub-header" style="padding-top: -13px;margin-top: -13px;">Resultados de la búsqueda</h2>
-          					<div class="table-responsive">
+							
+							<div class="row">
+								<div class="col-md-3">
+									<div class="btn-group" role="group">
+									  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
+									  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+									</div>
+								</div>
+								<div style="float:right;margin-right:20px;">
+									<div class="btn-group" role="group">
+									  <button type="button" id="boton-listado" class="btn btn-default"><span class="glyphicon glyphicon-list"></span></button>
+									  <button type="button" id="boton-calendar" class="btn btn-dark"><span class="glyphicon glyphicon-th"></span></button>
+									</div>
+								</div>
+							</div>
+							
+          					<div id="tabla-listado" style="display:none;" class="table-responsive">
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -119,8 +136,8 @@
 								JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
 								for (int i = 0; i < horasLibres.size(); i++) {
 									JSONObject actual = (JSONObject) horasLibres.get(i);
-									int numeroHora = Integer.valueOf((String)actual.get("hora"));
-									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
+									String hora = (String)actual.get("hora");
+// 									String hora = Utilidades.obtenerHoraDeNumero(numeroHora) + " - " + Utilidades.obtenerHoraDeNumeroFin(numeroHora+1);		
 									out.print("<tr>");
 									out.print("<td>"+hora+"</td>");
 									out.print("<td>"+actual.get("fecha")+"</td>");
@@ -174,12 +191,83 @@
 									
 									out.print("<tr>");
 								}
-							}
-						}
-						if (tipo!=null){ %>				
+							} %>				
 						</tbody>
 					</table>
 			</div>
+			
+			
+			<div id="tabla-calendar" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <%
+                      	Date fechaActual = Utilidades.stringADate((String)request.getAttribute("fechaInicio"));
+                  		Date fechaFinal = Utilidades.stringADate((String)request.getAttribute("fechaFinal"));
+                  		fechaFinal.setDate(fechaFinal.getDate()+1);
+                      	while(!fechaActual.equals(fechaFinal)){
+                          out.print("<th>"+Utilidades.dateAString(fechaActual)+"</th>");
+                          fechaActual.setDate(fechaActual.getDate()+1);
+                      	}
+                  %>
+                </tr>
+              </thead>
+              <tbody>
+                  <%
+                  	String horasMedicasJSON = (String) request.getAttribute("horasLibres");
+					JSONArray horasLibres = Utilidades.obtenerArrayJSON(horasMedicasJSON, "horasEncontradas");
+					for (int i = 0; i < horasLibres.size(); i++) {
+						JSONObject actual = (JSONObject) horasLibres.get(i);
+						out.print("<tr>");
+                        out.print("<td>"+actual.get("hora")+"</td>");
+						fechaActual = Utilidades.stringADate((String)request.getAttribute("fechaInicio"));
+                  		fechaFinal = Utilidades.stringADate((String)request.getAttribute("fechaFinal"));
+                  		fechaFinal.setDate(fechaFinal.getDate()+1);
+                      	while(!fechaActual.equals(fechaFinal)){
+                      		if (tipo.equals("busquedaPorMedico")) {
+                                 if (Utilidades.dateAString(fechaActual).equals((String)actual.get("fecha"))) {
+                                      out.print("<td><button class='btn'>Reservar</button></td>");   
+                                  }
+                                 else{
+                                     out.print("<td><p style='padding-left:20px;'>----</p></td>");
+                                 }     
+                             }
+//                       		else if(tipo.equals("busquedaPorEspecialidad")){
+//                                 ArrayList<HoraMedica> horasEnCalendario = Utilidades.horasEnCalendario(horasLibres, fechasRango, i, j);
+//                                 if (!horasEnCalendario.isEmpty()) {
+                                    %>
+<!--                                         <td> -->
+<!--                                             <div class="btn-group"> -->
+<!--                                             <button type="button" style="margin-right:0; margin-left: 0;" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> -->
+<!--                                               Reservar con: <span class="caret"></span> -->
+<!--                                             </button> -->
+<!--                                             <ul class="dropdown-menu" role="menu"> -->
+                                            <%
+//                                                 for (int k=0; k<horasEnCalendario.size();k++){
+//                                                     out.print("<li><a href='#'>"+horasEnCalendario.get(k).medico.getNombre()+"</a></li>");
+//                                                 }         
+                                            %>
+<!--                                             </ul> -->
+<!--                                             </div> -->
+<!--                                         </td>     -->
+                                    <%   
+//                                 }
+//                                 else{
+//                                     out.print("<td><p style='padding-left:20px;'>----</p></td>");
+//                                 } 
+//                             }
+                        fechaActual.setDate(fechaActual.getDate()+1);
+                      	}
+                      	out.print("</tr>");
+					}
+                                
+                   %>
+              </tbody>
+            </table>
+          </div>
+			
+			
 			<%} else {%>
 				<p class="text-center lead" style="margin-top:25%;">  -- Sin resultados -- <br> Realice una busqueda en el formulario de la sección izquierda </p>
 			<%} %>
@@ -193,35 +281,74 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="exampleModalLabel">Reservar hora médica APS</h4>
-		        <br>
-<!-- 		        <b>Médico:</b> <p id="id-medico"></p> -->
-				<div class="row">
-				  <div class="col-md-4"><b>Fecha:</b> <p id="id-fecha"></p></div>
-				  <div class="col-md-4"><b>Hora:</b> <p id="id-hora"></p></div>
-				  <div class="col-md-4"><b>Box:</b> <p id="id-box"></p></div>
-				</div> 
+		        <h3 class="modal-title" id="exampleModalLabel">
+		        <% if(session.getAttribute("id")!=null){ 
+			        	if (session.getAttribute("rol").equals("paciente")){
+			        		out.print("Reservar hora médica APS");
+			        	}
+			        	else{
+			        		out.print("No puede reservar");
+			        	}
+		        	}
+		        	else{
+		        		out.print("Inicio de sesión requerido");
+		        	}
+	        	%>
+		        </h3>
 		      </div>
 		      <div class="modal-body">
-		        <form id="formReserva" action="Reserva" method="get">
-		          <div class="form-group">
-		            <label for="paciente" class="control-label">ID Paciente:</label>
-		            <input type="text" class="form-control" name="paciente" id="paciente">
-		          </div>
-		          <div class="form-group">
-		            <label for="clave" class="control-label">Clave:</label>
-		            <input type="text" class="form-control" name="clave" id="clave">
-		          </div>
-		            <input type="hidden" class="form-control" name="id" id="id-input">
-		            <input type="hidden" class="form-control" name="tipo" value="APS">
-	            <div class="form-group">
-		          </div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-		        <button id="botonReservaModal" type="button" class="btn btn-primary">Reservar</button>
-		      </div>
+		      	<% 	if(session.getAttribute("id")!=null){ 
+			        	if (session.getAttribute("rol").equals("paciente")){%>
+			        		<div class="row">
+							  <div class="col-md-4"><b>Fecha:</b> <p id="id-fecha"></p></div>
+							  <div class="col-md-4"><b>Hora:</b> <p id="id-hora"></p></div>
+							  <div class="col-md-4"><b>Box:</b> <p id="id-box"></p></div>
+<!-- 							  <div class="col-md-3"><b>Médico:</b> <p id="id-medico"></p></div> -->
+							</div>
+					        <form id="formReserva" action="Reserva" method="get">
+					            <input type="hidden" class="form-control" name="paciente" value="<%=session.getAttribute("id")%>">
+					            <input type="hidden" class="form-control" name="id" id="id-input">
+					            <input type="hidden" class="form-control" name="tipo" value="APS">
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					        <button id="botonReservaModal" type="button" class="btn btn-primary">Reservar</button>
+					      </div>
+			        	<% }
+			        	else{%>
+			        		<center> <p class="lead">Solo los pacientes pueden reservar horas médicas</p></center>
+			        		<div class="modal-footer">
+						        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+					      	</div>
+			        	<%}
+		        	}
+		        	else{%>
+		        		<center> <p class="lead">Inicia sesión para continuar con la reserva</p></center>
+		        		<div class="row">
+							  <div class="col-md-4"><b>Fecha:</b> <p id="id-fecha"></p></div>
+							  <div class="col-md-4"><b>Hora:</b> <p id="id-hora"></p></div>
+							  <div class="col-md-4"><b>Box:</b> <p id="id-box"></p></div>
+						</div>
+		        		<form id="formReserva" method="post" action="Login" accept-charset="UTF-8">
+							<input type="hidden" name="tipo" value="login">
+							<div class="input-group" style="margin-bottom: 10px;">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" class="form-control" placeholder="Correo o Usuario" id="usuario" name="usuario">
+							</div>
+										
+							<div class="input-group" style="margin-bottom: 15px;">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+								<input  type="password" class="form-control" placeholder="Contraseña" id="pass" name="pass">
+							</div>
+						</form>
+						</div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					        <button id="botonReservaModal" type="button" class="btn btn-primary">Iniciar sesión</button>
+					      </div>
+		        	<%}
+	        	%>
 		    </div>
 		  </div>
 		</div>

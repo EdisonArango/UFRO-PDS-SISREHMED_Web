@@ -41,11 +41,7 @@ public class Reserva extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
     	String tipo = request.getParameter("tipo");
-    	String refer = request.getHeader("Referer");
-    	String[] partesURL = refer.split("/");
-    	String referer = partesURL[partesURL.length-1];
-    	System.out.println(referer);
-    	RequestDispatcher rd = request.getRequestDispatcher(referer);
+    	RequestDispatcher rd = request.getRequestDispatcher(Utilidades.referer(request));
     	HttpSession sesion = request.getSession();
     	if(tipo==null){
     		rd.forward(request, response);
@@ -53,14 +49,22 @@ public class Reserva extends HttpServlet {
     	
     	switch (tipo) {
 		case "APS":
+			if(sesion.getAttribute("id")==null){
+				sesion.setAttribute("mensaje", "danger;Error!;No esta autorizado para realizar esta acción");
+				response.sendRedirect("");
+				return;
+			}
+			else if(!sesion.getAttribute("rol").equals("paciente")){
+				sesion.setAttribute("mensaje", "danger;Error!;No esta autorizado para realizar esta acción");
+				response.sendRedirect("");
+				return;
+			}
 			int idHoraMedica = Integer.valueOf(request.getParameter("id"));
 			String paciente = request.getParameter("paciente");
-			System.out.println(paciente);
-			String clave = request.getParameter("clave");
 			int idPaciente;
 			if(Utilidades.isNumeric(paciente)){
 				idPaciente = Integer.valueOf(paciente);
-				String resultadoReserva = ws.reservarHoraAPS(idHoraMedica, idPaciente,clave);
+				String resultadoReserva = ws.reservarHoraAPS(idHoraMedica, idPaciente);
 				if(Utilidades.isNumeric(resultadoReserva)){
 					sesion.setAttribute("mensaje", "success;Bien!;Se ha reservado la hora médica, número de reserva: "+resultadoReserva);
 					rd.forward(request, response);
